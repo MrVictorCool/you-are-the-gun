@@ -1,0 +1,50 @@
+[gd_scene load_steps=5 format=3 uid="uid://cqlkswrufqxnc"]
+
+[ext_resource type="Script" path="res://scenes/character.gd" id="1_8poym"]
+[ext_resource type="Texture2D" uid="uid://cuw3qfog1nnos" path="res://assets/asset_1.png" id="2_iocbl"]
+[ext_resource type="PackedScene" uid="uid://se2oxttmgpmr" path="res://scenes/gun.tscn" id="3_2ef2f"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bgbrr"]
+radius = 10.0499
+
+[node name="Character" type="CharacterBody2D"]
+position = Vector2(23, 140)
+collision_layer = 2
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_8poym")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -11)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("2_iocbl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_bgbrr")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+debug_enabled = true
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="Gun" parent="." instance=ExtResource("3_2ef2f")]
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="."]
+emitting = false
+amount = 30
+one_shot = true
+speed_scale = 2.0
+explosiveness = 1.0
+lifetime_randomness = 0.2
+spread = 180.0
+gravity = Vector2(0, 10)
+initial_velocity_min = 20.0
+initial_velocity_max = 50.0
+linear_accel_max = 10.0
+scale_amount_min = 3.0
+scale_amount_max = 5.0
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="shoot" from="Gun" to="." method="_on_gun_shoot"]
